@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Garajes </title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <script src="/scripts/script.js" defer></script> 
+</head>
+<body>
+
+    <header>
+        <h1>Gestión de Garajes</h1>
+    </header>
+
+    <div class="contenedor">
+
+        <div id="vista-registro" class="tarjeta-registro">
+            <h2>Crear una Cuenta</h2>
+            
+            <div class="grupo-input">
+                <label for="reg-nombre">Nombre completo</label>
+                <input type="text" id="reg-nombre" placeholder="Nombre completo" required>
+            </div>
+
+            <div class="grupo-input">
+                <label for="reg-correo">Correo electrónico</label>
+                <input type="email" id="reg-correo" placeholder="correo@correo.es" required>
+            </div>
+
+            <div class="grupo-input">
+                <label for="reg-pass">Contraseña</label>
+                <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres" required>
+            </div>
+            
+            <button class="btn-principal" onclick="procesarRegistro()">Registrarse</button>
+            <div id="error-registro" class="mensaje-error oculto"></div>
+        </div>
+
+        <div id="vista-seleccion" class="oculto">
+            <div class="encabezado-plazas">
+                <div>
+                    <h2>Plazas Disponibles</h2>
+                    <p style="color: var(--texto-claro); margin-top: -10px;">Selecciona un garaje para gestionar tu reserva.</p>
+                </div>
+                <div style="font-weight: bold; color: var(--azul-oscuro);">
+                    👤 Hola, <span id="nombre-usuario-header">Arrendatario</span>
+                </div>
+            </div>
+
+            <div class="cuadricula-plazas">
+                <div class="tarjeta-plaza" onclick="seleccionarPlaza('Edificio Picasso D', 'Calle Rector Esteban Dominguez', 50)">
+                    <h3>Edificio Picasso D</h3>
+                    <div class="info-ubicacion">📍 Calle Rector Esteban Dominguez</div>
+                    <div class="precio-destacado">50€ <span style="font-size: 14px; font-weight: normal; color: var(--texto-claro);">/mes</span></div>
+                    <div class="disponibilidad">8/16 Disponibles</div>
+                </div>
+
+                <div class="tarjeta-plaza" onclick="seleccionarPlaza('Comunidad II', 'Camino Los Andenes, Taco', 45)">
+                    <h3>Comunidad II</h3>
+                    <div class="info-ubicacion">📍 Camino Los Andenes, Taco</div>
+                    <div class="precio-destacado">45€ <span style="font-size: 14px; font-weight: normal; color: var(--texto-claro);">/mes</span></div>
+                    <div class="disponibilidad">2/24 Disponibles</div>
+                </div>
+
+                <div class="tarjeta-plaza" onclick="seleccionarPlaza('Edificio Salazar', 'Calle Gonzalez Pablo', 60)">
+                    <h3>Edificio Salazar</h3>
+                    <div class="info-ubicacion">📍 Calle Gonzalez Pablo</div>
+                    <div class="precio-destacado">60€ <span style="font-size: 14px; font-weight: normal; color: var(--texto-claro);">/mes</span></div>
+                    <div class="disponibilidad pocas-plazas">1/28 Disponibles</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- VISTA RESERVA Y PAGO -->
+    <!-- ========================= -->
+
+    <div id="vista-reserva" class="oculto">
+
+        <div class="encabezado-reserva">
+            <div>
+                <h2>Confirmar Reserva</h2>
+                <p style="color: var(--texto-claro); margin-top: -10px;">
+                    Revisa los datos de la plaza antes de continuar con el pago.
+                </p>
+            </div>
+        </div>
+
+        <div class="tarjeta-registro">
+
+            <div class="grupo-input">
+                <label>Plaza seleccionada</label>
+                <input type="text" id="reserva-plaza" disabled>
+            </div>
+
+            <div class="grupo-input">
+                <label>Dirección</label>
+                <input type="text" id="reserva-direccion" disabled>
+            </div>
+
+            <div class="grupo-input">
+                <label>Precio total</label>
+                <input type="text" id="reserva-precio" disabled>
+            </div>
+
+            <div class="grupo-input">
+                <label>Fecha de reserva</label>
+                <input type="date" id="fecha-reserva">
+            </div>
+
+            <button class="btn-principal" onclick="confirmarReserva()">
+                Confirmar Reserva
+            </button>
+
+            <div id="mensaje-reserva" class="mensaje-error oculto"></div>
+
+        </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- VISTA PAGO -->
+    <!-- ========================= -->
+
+    <div id="vista-pago" class="oculto">
+
+        <div class="encabezado-reserva">
+            <div>
+                <h2>Pago de Reserva</h2>
+                <p style="color: var(--texto-claro); margin-top: -10px;">
+                    Introduce los datos de pago para finalizar la reserva.
+                </p>
+            </div>
+        </div>
+
+        <div class="tarjeta-registro">
+
+            <div class="grupo-input">
+                <label for="titular">Titular de la tarjeta</label>
+                <input type="text" id="titular" placeholder="Nombre completo">
+            </div>
+
+            <div class="grupo-input">
+                <label for="tarjeta">Número de tarjeta</label>
+                <input type="text" id="tarjeta" placeholder="1234 5678 9012 3456">
+            </div>
+
+            <div class="grupo-input">
+                <label for="cvv">CVV</label>
+                <input type="password" id="cvv" placeholder="123">
+            </div>
+
+            <button class="btn-principal" onclick="procesarPago()">
+                Realizar Pago
+            </button>
+
+            <div id="mensaje-pago" class="mensaje-error oculto"></div>
+
+        </div>
+    </div>
+
+</body>
+</html>
